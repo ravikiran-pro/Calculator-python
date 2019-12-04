@@ -20,16 +20,20 @@ def clear():
 	expression = "" 
 	equation.set("") 
 
-class image:
-	def __init__(self,filename,r,c,op,e_h=0):
-		abg="dark blue"
-		b="orange"
+class Button1:
+	def __init__(self,filename,row,column,op,e_h=0):
+		self.op=op
+		self.row=row
+		self.column=column
+		self.activebackground="dark blue"
+		self.bg="orange"
 		self.height=40+e_h
 		self.width=80+(e_h*2)
 		self.filename=location+filename+".png"
 		self.one=PhotoImage(file=self.filename)
-		button=Button(image=self.one,bg=b,activebackground=abg,
-					command=lambda: press(op),height=self.height,width=self.width).grid(row=r,column=c)
+	def __button__(self):
+		button=Button(image=self.one,bg=self.bg,activebackground=self.activebackground,command=lambda: press(self.op),
+					height=self.height,width=self.width).grid(row=self.row,column=self.column)
 
 gui=Tk() 
 gui.configure(background="orange") 
@@ -41,28 +45,23 @@ expression_field = Entry(gui, textvariable=equation,font=('CityBlueprint','14'))
 expression_field.grid(columnspan=4, ipadx=70) 
 equation.set(' ') 
 
-one=image("one",3,0,1)
-two=image("two",3,1,2)
-three=image("three",3,2,3)
-four=image("four",4,0,4)
-five=image("five",4,1,5)
-six=image("six",4,2,6)
-seven=image("seven",5,0,7)
-eight=image("eight",5,1,8)
-nine=image("nine",5,2,9)
-zero=image("zero",6,0,0)
-	
-plus=image("add",3,3,'+',e_h=10)
-minus=image("minus",4,3,'-',e_h=10)
-multiply=image('mult',5,3,'*',e_h=10)
-divide=image('div',6,3,'/',e_h=10)
-photo_eqto=PhotoImage(file="symbols\\eq_to.png")
-equal = Button(gui, image=photo_eqto,bg="orange",activebackground="dark blue" ,
-			command=equalpress,height=50,width=100) 
-equal.grid(row=6, column=2) 
+filename=["one","two","three","add","four","five","six","minus","seven","eight","nine","mult","zero","div"]
+list_row=[3,3,3,3,4,4,4,4,5,5,5,5,6,6]
+list_column=[0,1,2,3,0,1,2,3,0,1,2,3,0,3]
+list_op=[1,2,3,'+',4,5,6,'-',7,8,9,'*',0,'/']
+list_eh=[0,0,0,10,0,0,0,10,0,0,0,10,0,10]
+
+for i in range(len(filename)):
+	one=Button1(filename[i],list_row[i],list_column[i],list_op[i],list_eh[i])
+	one.__button__()
+
 photo_clear=PhotoImage(file="symbols\\clear.png")
 clear = Button(gui, image=photo_clear, 
-			command=clear,height=50,width=100) 
-clear.grid(row=6, column=1) 
+			command=clear,height=50,width=100) .grid(row=6, column=1) 
+
+
+photo_eqto=PhotoImage(file="symbols\\eq_to.png")
+equal = Button(gui, image=photo_eqto,bg="orange",activebackground="dark blue" ,
+			command=equalpress,height=50,width=100) .grid(row=6, column=2) 
 
 gui.mainloop() 
